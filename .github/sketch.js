@@ -48,7 +48,7 @@ function ship(x, y, jetBoost) {
 
   if (jetBoost) {
     fill(255, 255, 255);
-    circle(x + 20, y + 60, 20, 20);
+    circle(x, y + 40, 20, 20);
   }
 }
 function floor() {
@@ -77,4 +77,7 @@ function mouseClicked() {
   } else if (state === "result") {
     state = "game";
   }*/
+}
+function keyPressed() {
+  velocity *= 0.1;
 }
