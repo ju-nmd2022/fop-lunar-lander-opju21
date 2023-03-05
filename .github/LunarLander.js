@@ -56,8 +56,36 @@ function ship(x, y) {
   point(x - 30, y + 13);
   point(x + 30, y + 13);
 }
+function bunny(x, y) {
+  //ears
+  fill(255, 255, 255);
+  noStroke();
+  ellipse(x - 9, y - 7, 10, 40);
+  ellipse(x + 9, y - 7, 10, 40);
+  fill(245, 218, 223);
+  ellipse(x - 10, y - 10, 6, 30);
+  ellipse(x + 10, y - 10, 6, 30);
+  //bunny head
+  fill(255, 255, 255);
+  ellipse(x, y, 40, 30);
+  //blush uwu
+  fill(245, 218, 223);
+  circle(x - 12, y - 1, 6);
+  circle(x + 12, y - 1, 6);
+  //eyes
+  fill(139, 69, 19);
+  circle(x - 10, y - 4, 6);
+  circle(x + 10, y - 4, 6);
+  //mouth
+  stroke(139, 69, 19);
+  strokeWeight(1);
+  line(x, y - 4, x - 3, y - 1);
+  line(x, y - 4, x + 3, y - 1);
+  noStroke();
+}
 
 function draw() {
   background(2, 12, 18);
   ship(150, 150);
+  bunny(200, 200);
 }
