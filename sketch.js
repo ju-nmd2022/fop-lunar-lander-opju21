@@ -31,8 +31,8 @@ function startScreen() {
 }
 function gameScreen() {
   background(2, 12, 18);
-
   floor();
+  ship();
 }
 // what happens when lose or win
 function endScreen() {
@@ -194,17 +194,18 @@ function floor() {
 }
 
 function draw() {
-  ship();
-  floor();
   if (state === "start") {
     startScreen();
   } else if (state === "game") {
     gameScreen();
+
+    ship();
     startS = false;
     gameS = true;
     resultS = false;
   } else if (state === "result") {
     endScreen();
+
     startS = false;
     gameS = false;
     resultS = true;
