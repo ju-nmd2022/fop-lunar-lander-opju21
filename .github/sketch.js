@@ -10,6 +10,7 @@ let resultS = false;
 let result;
 var ship;
 var bunny;
+let nCircles = 100;
 
 function setup() {
   createCanvas(400, 600);
@@ -30,6 +31,7 @@ function startScreen() {
 }
 function gameScreen() {
   background(2, 12, 18);
+
   floor();
 }
 // what happens when lose or win
@@ -187,7 +189,7 @@ function fuelmeter(f) {
 }
 function floor() {
   noStroke();
-  fill(255, 255, 255);
+  fill(167, 187, 236);
   rect(0, 570, 400, 30);
 }
 

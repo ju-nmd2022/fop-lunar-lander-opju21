@@ -130,11 +130,37 @@ function bunny(x, y) {
   fill(248, 241, 174);
   ellipse(x, y - 30, 15, 3);
 }
+var spot = {
+  x: 100,
+  y: 50,
+};
+
+var col = {
+  r: 255,
+  g: 0,
+  b: 0,
+};
+function setup() {
+  createCanvas(400, 600);
+  background(0);
+  frameRate(2);
+}
 
 function draw() {
   background(2, 12, 18);
   //ship(50, 50);
   bunny(100, 100);
+  col.r = random(80, 255);
+  col.g = random(0, 25);
+  col.b = random(10, 190);
+
+  spot.x = random(0, width);
+  spot.y = random(0, width);
+
+  var diameter = random(5, 60);
+
+  fill(col.r, col.g, col.b);
+  ellipse(spot.x, spot.y, diameter, diameter);
 
   // the falling star is from here https://editor.p5js.org/Ellie_Lin/sketches/rJVVSuTt7
   /*let s = new Star(
