@@ -35,7 +35,7 @@ function gameScreen() {
 // what happens when lose or win
 function endScreen() {
   background(2, 12, 18);
-  floor();
+
   fill(255, 255, 255);
   strokeWeight(0);
   textSize(22);
@@ -107,6 +107,7 @@ function ship(x, y, jetBoost) {
   }
 }
 function bunny(x, y) {
+  push();
   //wings
   fill(255, 255, 255);
   ellipse(x + 40, y - 5, 26, 10);
@@ -145,6 +146,7 @@ function bunny(x, y) {
   noStroke();
   fill(248, 241, 174);
   ellipse(x, y - 30, 15, 3);
+  pop();
 }
 function fuelmeter(f) {
   if (fuelTank <= 15) {
@@ -161,6 +163,20 @@ function fuelmeter(f) {
     rect(300, 30, f, 10);
   }
 }
+function star(x, y) {
+  push();
+  noStroke();
+  fill(255, 255, 255);
+  circle(x, y - 1, 8);
+  stroke(255, 255, 255);
+  strokeWeight(2);
+  line(x, y, x + 7, y - 2);
+  line(x, y, x - 7, y - 2);
+  line(x, y, x - 5, y + 6);
+  line(x, y, x + 4, y + 5);
+  line(x, y, x, y - 9);
+  pop();
+}
 function floor() {
   noStroke();
   fill(167, 187, 236);
@@ -172,25 +188,37 @@ function draw() {
     startScreen();
   } else if (state === "game") {
     gameScreen();
-
+    push();
     noStroke();
     fill(167, 187, 236);
-    rect(0, 570, 400, 30);
+
+    ellipse(200, 760, 400, 400);
+    ellipse(100, 630, 100, 100);
+    ellipse(270, 590, 60, 60);
+    pop();
+    star(58, 181);
     ship();
 
     startS = false;
     gameS = true;
     resultS = false;
   } else if (state === "result") {
+    endScreen();
+    push();
     noStroke();
     fill(167, 187, 236);
-    rect(0, 570, 400, 30);
 
-    endScreen();
+    ellipse(200, 760, 400, 400);
+    ellipse(100, 630, 100, 100);
+    ellipse(270, 590, 60, 60);
+    pop();
+    ship();
+
     //ship();
     if (result === "crashed") {
       //background(255, 255, 255);
       fill(240, 128, 128);
+      noStroke();
       text("You crashed :(", 200, 240);
       bunny(200, yVal);
       yVal = yVal + ySpeed;
@@ -209,6 +237,7 @@ function draw() {
       text("You landed :D", 200, 240);
     } else if (result === "nofuel") {
       fill(240, 128, 128);
+      noStroke();
       text("Out of fuel", 200, 240);
       ship(200, yVal, keyIsDown(32));
     }

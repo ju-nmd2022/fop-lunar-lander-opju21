@@ -1,17 +1,4 @@
 // this is just a test page / using to make the figures
-let stars = [];
-let angle = 0;
-//https://editor.p5js.org/nanou/sketches/rJ-EMpxa looks cool, but wont use
-/*var spot = {
-  x: 100,
-  y: 50,
-};
-
-var col = {
-  r: 255,
-  g: 0,
-  b: 0,
-};*/
 
 function ship(x, y) {
   //cabin glass
@@ -130,7 +117,7 @@ function bunny(x, y) {
   fill(248, 241, 174);
   ellipse(x, y - 30, 15, 3);
 }
-var spot = {
+/*var spot = {
   x: 100,
   y: 50,
 };
@@ -139,98 +126,43 @@ var col = {
   r: 255,
   g: 0,
   b: 0,
-};
+};*/
 function setup() {
   createCanvas(400, 600);
+  background(2, 12, 18);
+  fill(255, 183, 173);
+  noStroke();
   background(0);
-  frameRate(2);
+  frameRate(30);
 }
 
 function draw() {
-  background(2, 12, 18);
-  //ship(50, 50);
-  bunny(100, 100);
-  col.r = random(80, 255);
-  col.g = random(0, 25);
-  col.b = random(10, 190);
-
-  spot.x = random(0, width);
-  spot.y = random(0, width);
-
-  var diameter = random(5, 60);
-
-  fill(col.r, col.g, col.b);
-  ellipse(spot.x, spot.y, diameter, diameter);
-
-  // the falling star is from here https://editor.p5js.org/Ellie_Lin/sketches/rJVVSuTt7
-  /*let s = new Star(
-    random(0, width),
-    random(0, height / 2),
-    random(1, 3),
-    random(1, 6),
-    5,
-    250,
-    250,
-    200
-  );
-  for (i = 0; i < random(3); i += 1) {
-    stars.push(s);
-  }
-  for (let star of stars) {
-    star.moveStar();
-    star.createStar();
+  //background(2, 12, 18);
+  /*for (let i = 0; i <= 0; i = i + 1) {
+    // use a local variable to give x
+    var xPos = random(0, width);
+    var yPos = random(0, height);
+    ellipse(xPos, yPos, 2, 2);
   }*/
-  /*spot.x = random(0, width);
-  spot.y = random(0, height);
-
+  //ellipse(random(width), random(height), 2, 2);
+  ship(50, 50);
+  star(200, 200);
   noStroke();
-  col.r = random(100, 255);
-  col.g = 0;
-  col.b = random(100, 200);
+  fill(167, 187, 236);
 
-  fill(col.r, col.g, col.b, 120);
-  ellipse(spot.x, spot.y, 40, 40);*/
+  ellipse(200, 760, 400, 400);
+  ellipse(100, 630, 100, 100);
+  ellipse(270, 590, 60, 60);
 }
-
-class Star {
-  constructor(_x, _y, _r1, _r2, _npoints, _colr, _colg, _colb) {
-    this.x = _x;
-    this.y = _y;
-    this.r1 = _r1;
-    this.r2 = _r2;
-    this.npoints = _npoints;
-    this.colr = _colr;
-    this.colg = _colg;
-    this.colb = _colb;
-
-    this.sx = 0;
-    this.sy = 0;
-    this.angle = TWO_PI / _npoints;
-    this.halfAngle = TWO_PI / _npoints / 2;
-  }
-
-  createStar() {
-    noStroke();
-    fill(this.colr, this.colg, this.colb);
-    beginShape();
-
-    for (let j = 0; j < TWO_PI; j += this.angle) {
-      this.sx = this.x + cos(j) * this.r2;
-      this.sy = this.y + sin(j) * this.r2;
-      vertex(this.sx, this.sy);
-      this.sx = this.x + cos(j + this.halfAngle) * this.r1;
-      this.sy = this.y + sin(j + this.halfAngle) * this.r1;
-      vertex(this.sx, this.sy);
-    }
-    endShape(CLOSE);
-  }
-
-  moveStar() {
-    this.y += pow(this.r1, 0.9);
-
-    if (this.y > height) {
-      let index = stars.indexOf(this);
-      stars.splice(index, 1);
-    }
-  }
+function star(x, y) {
+  noStroke();
+  fill(255, 255, 255);
+  circle(x, y - 1, 8);
+  stroke(255, 255, 255);
+  strokeWeight(2);
+  line(x, y, x + 7, y - 2);
+  line(x, y, x - 7, y - 2);
+  line(x, y, x - 5, y + 6);
+  line(x, y, x + 4, y + 5);
+  line(x, y, x, y - 9);
 }
