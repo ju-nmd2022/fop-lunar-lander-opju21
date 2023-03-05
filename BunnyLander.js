@@ -14,6 +14,7 @@ let nCircles = 100;
 
 function setup() {
   createCanvas(400, 600);
+  frameRate(30);
 }
 
 function startScreen() {
@@ -24,15 +25,12 @@ function startScreen() {
   textSize(22);
   textAlign(CENTER);
   textFont("Helvetica");
-
   text("Press a to play", 200, 100);
   textSize(12);
   text("Use Space to boost up, but watch out for the fuel meter", 200, 150);
 }
 function gameScreen() {
   background(2, 12, 18);
-  floor();
-  ship();
 }
 // what happens when lose or win
 function endScreen() {
@@ -44,30 +42,6 @@ function endScreen() {
   textAlign(CENTER);
   textFont("Helvetica");
   text("Press a to play again", 200, 200);
-  if (result === "crashed") {
-    //background(255, 255, 255);
-    fill(240, 128, 128);
-    text("You crashed :(", 200, 240);
-    bunny(200, yVal);
-    yVal = yVal + ySpeed;
-    if (yVal >= 550) {
-      ySpeed = -1;
-    }
-    fill(255, 255, 255);
-    strokeWeight(0);
-    textSize(12);
-    textAlign(CENTER);
-    textFont("Helvetica");
-  } else if (result === "won") {
-    ship(200, 550, keyIsDown(32));
-    noStroke();
-    fill(248, 241, 174);
-    text("You landed :D", 200, 240);
-  } else if (result === "nofuel") {
-    fill(240, 128, 128);
-    text("Out of fuel", 200, 240);
-    ship(200, yVal, keyIsDown(32));
-  }
 }
 
 function ship(x, y, jetBoost) {
@@ -199,13 +173,41 @@ function draw() {
   } else if (state === "game") {
     gameScreen();
 
+    floor();
     ship();
+
     startS = false;
     gameS = true;
     resultS = false;
   } else if (state === "result") {
-    endScreen();
+    floor();
 
+    endScreen();
+    //ship();
+    if (result === "crashed") {
+      //background(255, 255, 255);
+      fill(240, 128, 128);
+      text("You crashed :(", 200, 240);
+      bunny(200, yVal);
+      yVal = yVal + ySpeed;
+      if (yVal >= 550) {
+        ySpeed = -1;
+      }
+      fill(255, 255, 255);
+      strokeWeight(0);
+      textSize(12);
+      textAlign(CENTER);
+      textFont("Helvetica");
+    } else if (result === "won") {
+      ship(200, 550, keyIsDown(32));
+      noStroke();
+      fill(248, 241, 174);
+      text("You landed :D", 200, 240);
+    } else if (result === "nofuel") {
+      fill(240, 128, 128);
+      text("Out of fuel", 200, 240);
+      ship(200, yVal, keyIsDown(32));
+    }
     startS = false;
     gameS = false;
     resultS = true;
