@@ -173,14 +173,18 @@ function draw() {
   } else if (state === "game") {
     gameScreen();
 
-    floor();
+    noStroke();
+    fill(167, 187, 236);
+    rect(0, 570, 400, 30);
     ship();
 
     startS = false;
     gameS = true;
     resultS = false;
   } else if (state === "result") {
-    floor();
+    noStroke();
+    fill(167, 187, 236);
+    rect(0, 570, 400, 30);
 
     endScreen();
     //ship();
