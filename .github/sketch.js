@@ -1,8 +1,8 @@
-let state = "game";
-let fuelTank = 100;
+let state = "start";
+let fuelTank = 40;
 let yVal = 30;
 let mass = 20;
-let accel = 0.1;
+let accel = 0.2;
 let ySpeed = 0;
 let startS = true;
 let gameS = false;
@@ -21,6 +21,7 @@ function startScreen() {
   textSize(22);
   textFont("Helvetica");
   text("Start", 50, 50);
+  text("Press a to play", 100, 100);
 }
 function gameScreen() {
   background(2, 12, 18);
@@ -39,7 +40,7 @@ function endScreen() {
   strokeWeight(0);
   textSize(22);
   textFont("Helvetica");
-  text("Press a to start", 100, 100);
+  text("Press a to play again", 100, 100);
 }
 
 function ship(x, y, jetBoost) {
@@ -173,18 +174,15 @@ function draw() {
       ySpeed = ySpeed + accel;
     }
   }
-  if (startS) {
-    text("Start", 50, 50);
-  }
 
   if (state === "game" && yVal >= 550 && ySpeed <= 5) {
     yVal = 590;
     state = "result";
     result = "won";
-  } else if (state === "game" && yVal >= 600 && ySpeed > 5) {
+  } else if (state === "game" && yVal >= 550 && ySpeed > 5) {
     state = "result";
     result = "crashed";
-    yVal = 600;
+    yVal = 590;
   } else if (fuelTank == -1) {
     state = "result";
     result = "nofuel";
@@ -201,7 +199,7 @@ function keyTyped() {
       yVal = 30;
       ySpeed = 0;
       velocity = 0.1;
-      fuelTank = 100;
+      fuelTank = 40;
     } else if (state === "game") {
       state = "result";
     } else if (state === "result") {
@@ -209,6 +207,6 @@ function keyTyped() {
       yVal = 30;
       ySpeed = 0;
       velocity = 0.1;
-      fuelTank = 100;
+      fuelTank = 40;
     }
 }
