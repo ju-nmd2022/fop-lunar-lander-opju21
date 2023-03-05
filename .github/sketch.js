@@ -1,12 +1,12 @@
-let state = "game";
+let state = "start";
 let fuelTank = 100;
 let yVal = 30;
 let mass = 20;
 let accel = 0.1;
 let ySpeed = 0;
-let startS = "true";
-let gameS = "false";
-let resultS = "false";
+let startS = true;
+let gameS = false;
+let resultS = false;
 
 var ship;
 
@@ -41,26 +41,29 @@ function ship(x, y, jetBoost) {
     circle(x, y + 40, 20, 20);
   }
 }
+function floor() {
+  fill(255, 255, 255);
+  rect(0, 590, 400, 10);
+}
 
 function draw() {
-  ship(200, yVal, keyIsPressed);
-  yVal = yVal + ySpeed;
+  if (state === "start") {
+    startScreen();
+  } else if (state === "game") {
+    gameScreen();
+  } else if (state === "result") {
+    endScreen();
+  }
 
+  //the ship falling
+  ship(200, yVal, keyIsPressed);
+  //its going
+  yVal = yVal + ySpeed;
   if (keyIsDown(38)) {
     ySpeed = ySpeed - 0.5;
     fuelTank -= 1;
   } else {
     ySpeed = ySpeed + accel;
-  }
-
-  if (state === "start") {
-    startScreen();
-  } else if (state === "game") {
-    gameScreen();
-    //the ship falling
-    //its going
-  } else if (state === "result") {
-    endScreen();
   }
 }
 
