@@ -17,30 +17,55 @@ function setup() {
 
 function startScreen() {
   background(2, 12, 18);
+  //start game text, start screen
+  fill(255, 255, 255);
   strokeWeight(0);
   textSize(22);
+  textAlign(CENTER);
   textFont("Helvetica");
-  text("Start", 50, 50);
-  text("Press a to play", 100, 100);
+
+  text("Press a to play", 200, 100);
+  textSize(12);
+  text("Use Space to boost up, but watch out for the fuel meter", 200, 150);
 }
 function gameScreen() {
   background(2, 12, 18);
-  strokeWeight(0);
-  textSize(22);
-  textFont("Helvetica");
-  text("Bunny Spaceship lander", 30, 20);
-  textSize(12);
-  //text("Speed: " + ySpeed, 20, 120);
-  text("Fuel: " + fuelTank, 20, 140);
-  //text("Y-cord: " + yVal, 20, 160);
-  //text("game: " + gameS, 20, 180);
+  floor();
 }
 // what happens when lose or win
 function endScreen() {
+  background(2, 12, 18);
+  floor();
+  fill(255, 255, 255);
   strokeWeight(0);
   textSize(22);
+  textAlign(CENTER);
   textFont("Helvetica");
-  text("Press a to play again", 100, 100);
+  text("Press a to play again", 200, 200);
+  if (result === "crashed") {
+    //background(255, 255, 255);
+    fill(240, 128, 128);
+    text("You crashed :(", 200, 240);
+    bunny(200, yVal);
+    yVal = yVal + ySpeed;
+    if (yVal >= 550) {
+      ySpeed = -1;
+    }
+    fill(255, 255, 255);
+    strokeWeight(0);
+    textSize(12);
+    textAlign(CENTER);
+    textFont("Helvetica");
+  } else if (result === "won") {
+    ship(200, 550, keyIsDown(32));
+    noStroke();
+    fill(248, 241, 174);
+    text("You landed :D", 200, 240);
+  } else if (result === "nofuel") {
+    fill(240, 128, 128);
+    text("Out of fuel", 200, 240);
+    ship(200, yVal, keyIsDown(32));
+  }
 }
 
 function ship(x, y, jetBoost) {
@@ -98,13 +123,22 @@ function ship(x, y, jetBoost) {
   point(x - 15, y + 17);
   point(x - 30, y + 13);
   point(x + 30, y + 13);
-
-  if (jetBoost) {
-    fill(255, 255, 255);
-    circle(x, y + 40, 20, 20);
+  if (state === "game") {
+    if (jetBoost) {
+      fill(255, 255, 255);
+      circle(x, y + 40, 20, 20);
+    }
   }
 }
 function bunny(x, y) {
+  //wings
+  fill(255, 255, 255);
+  ellipse(x + 40, y - 5, 26, 10);
+  ellipse(x + 42, y, 12, 9);
+  ellipse(x + 35, y - 1, 10, 12);
+  ellipse(x - 40, y - 5, 26, 10);
+  ellipse(x - 42, y, 12, 9);
+  ellipse(x - 35, y - 1, 10, 12);
   //ears
   fill(255, 255, 255);
   noStroke();
@@ -121,24 +155,45 @@ function bunny(x, y) {
   circle(x - 12, y - 1, 6);
   circle(x + 12, y - 1, 6);
   //eyes
-  fill(139, 69, 19);
-  circle(x - 10, y - 4, 6);
-  circle(x + 10, y - 4, 6);
+  stroke(139, 69, 19);
+  strokeWeight(2);
+  line(x - 12, y - 4, x - 8, y - 1);
+  line(x - 8, y - 4, x - 12, y - 1);
+  line(x + 12, y - 4, x + 8, y - 1);
+  line(x + 8, y - 4, x + 12, y - 1);
   //mouth
   stroke(139, 69, 19);
   strokeWeight(1);
   line(x, y - 4, x - 3, y - 1);
   line(x, y - 4, x + 3, y - 1);
   noStroke();
+  fill(248, 241, 174);
+  ellipse(x, y - 30, 15, 3);
+}
+function fuelmeter(f) {
+  if (fuelTank <= 15) {
+    noStroke();
+    fill(240, 128, 128);
+    rect(300, 30, f, 10);
+  } else if (fuelTank > 15 && fuelTank <= 25) {
+    noStroke();
+    fill(248, 241, 174);
+    rect(300, 30, f, 10);
+  } else {
+    noStroke();
+    fill(133, 168, 159);
+    rect(300, 30, f, 10);
+  }
 }
 function floor() {
+  noStroke();
   fill(255, 255, 255);
-  rect(0, 590, 400, 10);
+  rect(0, 570, 400, 30);
 }
 
 function draw() {
   ship();
-
+  floor();
   if (state === "start") {
     startScreen();
   } else if (state === "game") {
@@ -151,24 +206,15 @@ function draw() {
     startS = false;
     gameS = false;
     resultS = true;
-    if (result === "crashed") {
-      //background(0, 0, 0);
-      bunny(500, 500);
-      text("u crashed :(", 200, 200);
-    } else if (result === "won") {
-      //ship(200, yVal, keyIsDown(38));
-      text("U landed :D", 200, 200);
-    } else if (result === "nofuel") {
-      text("Out of fuel", 200, 200);
-    }
   }
   if (gameS) {
     //the ship falling
-    ship(200, yVal, keyIsDown(38));
+    ship(200, yVal, keyIsDown(32));
+    fuelmeter(fuelTank);
     //its going
     yVal = yVal + ySpeed;
-    if (keyIsDown(38)) {
-      ySpeed = ySpeed - 0.5;
+    if (keyIsDown(32)) {
+      ySpeed = ySpeed - 0.7;
       fuelTank -= 1;
     } else {
       ySpeed = ySpeed + accel;
@@ -183,10 +229,11 @@ function draw() {
     state = "result";
     result = "crashed";
     yVal = 590;
-  } else if (fuelTank == -1) {
+  } else if (fuelTank <= 0) {
     state = "result";
     result = "nofuel";
-  } else {
+    yVal = yVal + ySpeed * 3;
+  } else if (state === "game") {
     result = "restart";
   }
 }
