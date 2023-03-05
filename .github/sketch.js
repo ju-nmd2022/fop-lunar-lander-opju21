@@ -1,18 +1,17 @@
 let state = "game";
-//let fuelTank = 100;
+let fuelTank = 100;
 let yVal = 30;
-let velocity = 0;
 let mass = 20;
-let accel;
-//var ground;
+let accel = 0.1;
+let ySpeed = 0;
+let startS = "true";
+let gameS = "false";
+let resultS = "false";
+
 var ship;
 
 function setup() {
   createCanvas(400, 600);
-  // the gravity is from this www.editor.p5js.org/dansakamoto/sketches/S1J_MEXYm
-  yVal = 0;
-  velocity = 0;
-  accel = mass * 0.01;
 }
 
 function startScreen() {
@@ -22,19 +21,10 @@ function startScreen() {
 function gameScreen() {
   background(2, 12, 18);
   text("Bunny Spaceship lander", 30, 20);
-  text("vel: " + velocity, 20, 100);
-  //ground= floor();
-  ship(190, yVal, keyIsPressed);
-  //its going
-  velocity += accel;
-  yVal += velocity;
-  if (yVal > height - mass / 2) {
-    // A little dampening when hitting the bottom
-    velocity *= -0.6;
-    yVal = height - mass / 2;
-  }
 
-  //text(fuelTank + " Fuel", 330, 20);
+  text("Speed: " + ySpeed, 20, 120);
+  text("Fuel: " + fuelTank, 20, 140);
+  text("Y-cord: " + yVal, 20, 160);
 }
 // what happens when lose or win
 function endScreen() {
@@ -51,24 +41,34 @@ function ship(x, y, jetBoost) {
     circle(x, y + 40, 20, 20);
   }
 }
-function floor() {
-  fill(255, 255, 255);
-  rect(0, 590, 400, 10);
-}
 
 function draw() {
+  ship(200, yVal, keyIsPressed);
+  yVal = yVal + ySpeed;
+
+  if (keyIsDown(38)) {
+    ySpeed = ySpeed - 0.5;
+    fuelTank -= 1;
+  } else {
+    ySpeed = ySpeed + accel;
+  }
+
   if (state === "start") {
     startScreen();
   } else if (state === "game") {
     gameScreen();
+    //the ship falling
+    //its going
   } else if (state === "result") {
     endScreen();
   }
 }
 
 function mouseClicked() {
-  yVal = 0;
-  velocity = 0;
+  yVal = 30;
+  ySpeed = 0;
+  velocity = 0.1;
+  fuelTank = 100;
   //changing gamescreen
   /*if (state === "start") {
     state = "game";
@@ -77,7 +77,4 @@ function mouseClicked() {
   } else if (state === "result") {
     state = "game";
   }*/
-}
-function keyPressed() {
-  velocity *= 0.1;
 }
