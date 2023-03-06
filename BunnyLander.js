@@ -30,16 +30,14 @@ function startScreen() {
   text("Press 'a' to play", 200, 130);
   textSize(12);
   text("Use 'Space' to boost up, but watch out for the fuel meter", 200, 150);
-  blink();
 }
 function gameScreen() {
   background(16, 17, 24);
-  blink();
 }
 // what happens when lose or win
 function endScreen() {
   background(16, 17, 24);
-  blink();
+
   fill(255, 255, 255);
   strokeWeight(0);
   textSize(15);
@@ -311,51 +309,6 @@ function keyTyped() {
       velocity = 0.1;
       fuelTank = 40;
     }
-}
-
-function blink() {
-  //made from this https://editor.p5js.org/Q/sketches/K-n0LVt2D
-  // but bc i have background it blinks instead of just existing
-  // Lets make sure we don't get stuck in infinite loop
-  var protection = 0;
-
-  // Try to get to 500
-  while (circles.length < 80) {
-    var circle = {
-      x: random(width),
-      y: random(height),
-      r: random(6, 36),
-    };
-
-    // Does it overlap any previous circles?
-    var overlapping = false;
-    for (var j = 0; j < circles.length; j++) {
-      var other = circles[j];
-      var d = dist(circle.x, circle.y, other.x, other.y);
-      if (d < circle.r + other.r) {
-        overlapping = true;
-      }
-    }
-
-    // If not keep it!
-    if (!overlapping) {
-      circles.push(circle);
-    }
-
-    // Are we stuck?
-    protection++;
-    if (protection > 10000) {
-      break;
-    }
-  }
-
-  // Draw all the circles
-  for (var i = 0; i < circles.length; i++) {
-    // fill(255, 0, 175, 100);
-    fill(random(255), random(255), random(255), 100);
-    noStroke();
-    ellipse(circles[i].x, circles[i].y, 2, 2);
-  } // end of https://editor.p5js.org/Q/sketches/K-n0LVt2D
 }
 
 function coloredStars() {
