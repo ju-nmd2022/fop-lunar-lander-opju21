@@ -320,7 +320,7 @@ function blink() {
   var protection = 0;
 
   // Try to get to 500
-  while (circles.length < 100) {
+  while (circles.length < 80) {
     var circle = {
       x: random(width),
       y: random(height),
