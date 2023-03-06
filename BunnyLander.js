@@ -2,7 +2,7 @@ let state = "start";
 let fuelTank = 40;
 let yVal = 30;
 let mass = 20;
-let accel = 0.2;
+let accel = 0.5;
 let ySpeed = 0;
 let startS = true;
 let gameS = false;
@@ -10,7 +10,8 @@ let resultS = false;
 let result;
 var ship;
 var bunny;
-let nCircles = 100;
+var star;
+var circles = [];
 
 function setup() {
   createCanvas(400, 600);
@@ -18,32 +19,35 @@ function setup() {
 }
 
 function startScreen() {
-  background(2, 12, 18);
+  background(16, 17, 24);
+
   //start game text, start screen
   fill(255, 255, 255);
   strokeWeight(0);
-  textSize(22);
+  textSize(15);
   textAlign(CENTER);
   textFont("Helvetica");
-  text("Press a to play", 200, 100);
+  text("Press 'a' to play", 200, 130);
   textSize(12);
-  text("Use Space to boost up, but watch out for the fuel meter", 200, 150);
+  text("Use 'Space' to boost up, but watch out for the fuel meter", 200, 150);
+  blink();
 }
 function gameScreen() {
-  background(2, 12, 18);
+  background(16, 17, 24);
+  blink();
 }
 // what happens when lose or win
 function endScreen() {
-  background(2, 12, 18);
-
+  background(16, 17, 24);
+  blink();
   fill(255, 255, 255);
   strokeWeight(0);
-  textSize(22);
+  textSize(15);
   textAlign(CENTER);
   textFont("Helvetica");
-  text("Press a to play again", 200, 200);
+  text("Press 'a' to play again", 200, 280);
 }
-
+//this the ship that moves
 function ship(x, y, jetBoost) {
   //cabin glass
   noStroke();
@@ -106,6 +110,7 @@ function ship(x, y, jetBoost) {
     }
   }
 }
+// dead bunny x-x
 function bunny(x, y) {
   push();
   //wings
@@ -148,6 +153,7 @@ function bunny(x, y) {
   ellipse(x, y - 30, 15, 3);
   pop();
 }
+// a bar that goes down with the fuel
 function fuelmeter(f) {
   if (fuelTank <= 15) {
     noStroke();
@@ -163,40 +169,40 @@ function fuelmeter(f) {
     rect(300, 30, f, 10);
   }
 }
-function star(x, y) {
-  push();
+//cute lil stars
+function star(x, y, a, b, c) {
   noStroke();
-  fill(255, 255, 255);
-  circle(x, y - 1, 8);
-  stroke(255, 255, 255);
-  strokeWeight(2);
-  line(x, y, x + 7, y - 2);
-  line(x, y, x - 7, y - 2);
-  line(x, y, x - 5, y + 6);
-  line(x, y, x + 4, y + 5);
-  line(x, y, x, y - 9);
-  pop();
-}
-function floor() {
-  noStroke();
-  fill(167, 187, 236);
-  rect(0, 570, 400, 30);
+  fill(a, b, c);
+  circle(x, y - 1, 9);
+  stroke(a, b, c);
+  strokeWeight(3);
+  line(x, y, x + 5, y - 2);
+  line(x, y, x - 5, y - 2);
+  line(x, y, x - 4, y + 4);
+  line(x, y, x + 4, y + 4);
+  line(x, y, x, y - 7);
 }
 
 function draw() {
   if (state === "start") {
     startScreen();
+    coloredStars();
   } else if (state === "game") {
     gameScreen();
+    coloredStars();
+    //the moon
     push();
     noStroke();
-    fill(167, 187, 236);
-
+    fill(65, 67, 97);
     ellipse(200, 760, 400, 400);
     ellipse(100, 630, 100, 100);
     ellipse(270, 590, 60, 60);
+    fill(42, 45, 67);
+    circle(200, 760, 366);
+    ellipse(100, 630, 80, 80);
+    ellipse(270, 590, 40, 40);
     pop();
-    star(58, 181);
+
     ship();
 
     startS = false;
@@ -204,14 +210,20 @@ function draw() {
     resultS = false;
   } else if (state === "result") {
     endScreen();
+    coloredStars();
+    //the moon
     push();
     noStroke();
-    fill(167, 187, 236);
-
+    fill(65, 67, 97);
     ellipse(200, 760, 400, 400);
     ellipse(100, 630, 100, 100);
     ellipse(270, 590, 60, 60);
+    fill(42, 45, 67);
+    circle(200, 760, 366);
+    ellipse(100, 630, 80, 80);
+    ellipse(270, 590, 40, 40);
     pop();
+
     ship();
 
     //ship();
@@ -219,25 +231,29 @@ function draw() {
       //background(255, 255, 255);
       fill(240, 128, 128);
       noStroke();
+      textSize(20);
       text("You crashed :(", 200, 240);
       bunny(200, yVal);
+      // this makes the bunny go upp
       yVal = yVal + ySpeed;
       if (yVal >= 550) {
         ySpeed = -1;
       }
       fill(255, 255, 255);
       strokeWeight(0);
-      textSize(12);
+      textSize(20);
       textAlign(CENTER);
       textFont("Helvetica");
     } else if (result === "won") {
       ship(200, 550, keyIsDown(32));
       noStroke();
       fill(248, 241, 174);
+      textSize(20);
       text("You landed :D", 200, 240);
     } else if (result === "nofuel") {
       fill(240, 128, 128);
       noStroke();
+      textSize(20);
       text("Out of fuel", 200, 240);
       ship(200, yVal, keyIsDown(32));
     }
@@ -251,6 +267,7 @@ function draw() {
     fuelmeter(fuelTank);
     //its going
     yVal = yVal + ySpeed;
+    //takes away from the speed value
     if (keyIsDown(32)) {
       ySpeed = ySpeed - 0.7;
       fuelTank -= 1;
@@ -294,4 +311,61 @@ function keyTyped() {
       velocity = 0.1;
       fuelTank = 40;
     }
+}
+
+function blink() {
+  //made from this https://editor.p5js.org/Q/sketches/K-n0LVt2D
+  // but bc i have background it blinks instead of just existing
+  // Lets make sure we don't get stuck in infinite loop
+  var protection = 0;
+
+  // Try to get to 500
+  while (circles.length < 500) {
+    var circle = {
+      x: random(width),
+      y: random(height),
+      r: random(6, 36),
+    };
+
+    // Does it overlap any previous circles?
+    var overlapping = false;
+    for (var j = 0; j < circles.length; j++) {
+      var other = circles[j];
+      var d = dist(circle.x, circle.y, other.x, other.y);
+      if (d < circle.r + other.r) {
+        overlapping = true;
+      }
+    }
+
+    // If not keep it!
+    if (!overlapping) {
+      circles.push(circle);
+    }
+
+    // Are we stuck?
+    protection++;
+    if (protection > 10000) {
+      break;
+    }
+  }
+
+  // Draw all the circles
+  for (var i = 0; i < circles.length; i++) {
+    // fill(255, 0, 175, 100);
+    fill(random(255), random(255), random(255), 100);
+    noStroke();
+    ellipse(circles[i].x, circles[i].y, 2, 2);
+  } // end of https://editor.p5js.org/Q/sketches/K-n0LVt2D
+}
+
+function coloredStars() {
+  // colored stars
+  star(245, 20, 255, 133, 82);
+  star(10, 20, 133, 255, 199);
+  star(50, 50, 230, 230, 230);
+  star(308, 68, 255, 241, 208);
+  star(370, 108, 240, 200, 8);
+  star(320, 200, 6, 174, 213);
+  star(40, 190, 152, 217, 194);
+  star(137, 72, 171, 237, 198);
 }

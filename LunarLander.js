@@ -1,5 +1,5 @@
 // this is just a test page / using to make the figures
-
+var circles = [];
 function ship(x, y) {
   //cabin glass
   noStroke();
@@ -130,10 +130,48 @@ var col = {
 function setup() {
   createCanvas(400, 600);
   background(2, 12, 18);
-  fill(255, 183, 173);
-  noStroke();
-  background(0);
+
   frameRate(30);
+  // Lets make sure we don't get stuck in infinite loop
+  var protection = 0;
+
+  // Try to get to 500
+  while (circles.length < 500) {
+    var circle = {
+      x: random(width),
+      y: random(height),
+      r: random(6, 36),
+    };
+
+    // Does it overlap any previous circles?
+    var overlapping = false;
+    for (var j = 0; j < circles.length; j++) {
+      var other = circles[j];
+      var d = dist(circle.x, circle.y, other.x, other.y);
+      if (d < circle.r + other.r) {
+        overlapping = true;
+      }
+    }
+
+    // If not keep it!
+    if (!overlapping) {
+      circles.push(circle);
+    }
+
+    // Are we stuck?
+    protection++;
+    if (protection > 10000) {
+      break;
+    }
+  }
+
+  // Draw all the circles
+  for (var i = 0; i < circles.length; i++) {
+    // fill(255, 0, 175, 100);
+    fill(255, 255, 255, 100);
+    noStroke();
+    ellipse(circles[i].x, circles[i].y, 3, 3);
+  }
 }
 
 function draw() {
